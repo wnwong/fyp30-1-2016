@@ -42,6 +42,16 @@ public class UserLocalStore {
         spEditor.commit();
     }
 
+    public void setRefreshStatus(boolean refresh){
+        SharedPreferences.Editor spEditor = userLocalDatabase.edit();
+        spEditor.putBoolean("refresh", refresh);
+        spEditor.commit();
+    }
+
+    public boolean getRefreshStatus(){
+        return userLocalDatabase.getBoolean("refresh", true);
+    }
+
     public void clearUserData(){
         SharedPreferences.Editor spEditor = userLocalDatabase.edit();
         spEditor.clear();

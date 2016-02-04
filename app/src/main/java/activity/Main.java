@@ -62,10 +62,10 @@ public class Main extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         userLocalStore = new UserLocalStore(this);
-       if(count == 0){
+       if(userLocalStore.getRefreshStatus() == true){
            new loadAllProducts().execute();
            new getProductList().execute();
-           count = 1;
+           userLocalStore.setRefreshStatus(false);
        }
         Fragment frag = new CameraFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();

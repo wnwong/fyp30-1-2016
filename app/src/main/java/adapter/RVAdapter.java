@@ -69,7 +69,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CameraViewHolder>{
         // Display the attributes of a product one by one
         holder.name.setText(product.getBrand() + " " + product.getModel() + " " +product.getStorage());
         holder.photo.setImageBitmap(bitmap);
- /*       holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -92,7 +92,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CameraViewHolder>{
 
         });
 
-*/
+
     }
 
     @Override
