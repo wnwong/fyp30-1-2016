@@ -9,9 +9,10 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="2dp">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/product_photo"
@@ -23,82 +24,16 @@
                 android:scaleType="fitXY" />
 
             <TextView
-                android:id="@+id/gname"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/gname"
-                android:layout_above="@+id/product_price"
-                android:layout_centerHorizontal="true" />
-
-            <TextView
-                android:id="@+id/gprice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/product_price"
-                android:layout_toRightOf="@+id/product_photo"
-                android:text="@string/gprice"
-                android:layout_alignLeft="@+id/gname"/>
-
-            <TextView
-                android:id="@+id/gwarranty"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/product_warranty"
-                android:layout_toRightOf="@+id/product_photo"
-                android:text="@string/gwarranty"
-                android:layout_alignLeft="@+id/gprice"/>
-
-            <TextView
-                android:id="@+id/gplace"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/product_place"
-                android:layout_toRightOf="@+id/product_photo"
-                android:text="@string/glocation"
-                android:layout_alignLeft="@+id/gwarranty"/>
-
-            <TextView
                 android:id="@+id/product_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="8dp"
-                android:paddingTop="8dp"
-                android:text="name"
-                android:layout_alignTop="@+id/product_photo"
-                android:layout_toRightOf="@+id/gname"
-                android:layout_toEndOf="@+id/gname" />
+                android:paddingTop="16dp"
+                android:textColor="@color/primaryText"
+                android:textStyle="bold"
+                android:text="Apple iPhone 6 Plus 16GB"
+                android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/product_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/product_name"
-                android:layout_alignStart="@+id/product_name"
-                android:layout_below="@+id/product_name"
-                android:paddingLeft="8dp"
-                android:paddingTop="8dp"
-                android:text="price" />
-
-            <TextView
-                android:id="@+id/product_warranty"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@id/product_price"
-                android:layout_below="@+id/product_price"
-                android:paddingLeft="8dp"
-                android:paddingTop="8dp"
-                android:text="warranty" />
-
-            <TextView
-                android:id="@+id/product_place"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/product_warranty"
-                android:layout_alignLeft="@id/product_warranty"
-                android:paddingLeft="8dp"
-                android:paddingTop="8dp"
-                android:text="place" />
-
-        </RelativeLayout>
+        </LinearLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

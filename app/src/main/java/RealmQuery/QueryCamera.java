@@ -5,6 +5,7 @@ import android.content.Context;
 import java.util.List;
 
 import RealmModel.RealmCamera;
+import RealmModel.RealmProduct;
 import activity.CameraFragment;
 import io.realm.Case;
 import io.realm.Realm;
@@ -32,7 +33,7 @@ public class QueryCamera   {
       {
           if (realm.where(RealmCamera.class).equalTo("name",tempCamera.name).count() > 0)
           {
-           System.out.println("exsite data");
+           System.out.println("exist data");
           }
           else
           {
@@ -69,6 +70,12 @@ public class QueryCamera   {
         RealmQuery<RealmCamera> realmCameras = realm.where(RealmCamera.class).equalTo("name", name, Case.INSENSITIVE);
         System.out.println("realmCameras.count()" + realmCameras.count());
         return realmCameras;
+    }
+    public RealmResults<RealmProduct> retrieveProductsByType(String type)
+    {
+        RealmResults<RealmProduct> realmProducts = realm.where(RealmProduct.class).equalTo("type", type, Case.INSENSITIVE).findAll();
+
+        return realmProducts;
     }
 
     public RealmResults<RealmCamera>

@@ -81,10 +81,10 @@
         <item>"SE846"</item>
     </string-array>
     <!-- gadget info-->
-    <string name="gname">物品名稱：</string>
-    <string name="gprice">售價：</string>
-    <string name="gwarranty">保養期內：</string>
-    <string name="glocation">交易地點：</string>
+    <string name="gname">物品名稱</string>
+    <string name="gprice">售價</string>
+    <string name="gwarranty">保養期內</string>
+    <string name="glocation">交易地點</string>
 
 
     <!--location-->
@@ -169,6 +169,12 @@
         <item>"南丫島"</item>
         <item>"梅窩"</item>
     </string-array>
+
+    <string name="os">作業系統</string>
+    <string name="mon">顯示屏</string>
+    <string name="resolution">解像度</string>
+    <string name="weight">重量</string>
+    <string name="camera">鏡頭</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

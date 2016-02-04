@@ -7,4 +7,5 @@
     <color name="secondaryText">#727272</color>
     <color name="icons">#FFFFFF</color>
     <color name="tabsScrollColor">#8a140e</color>
+    <color name="cardPrice">#af0875</color>
 </resources>

@@ -16,10 +16,12 @@ import android.view.LayoutInflater;
 import com.example.user.secondhandtradingplatform.DetailPageActivity;
 import com.example.user.secondhandtradingplatform.R;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import RealmModel.RealmCamera;
+import RealmModel.RealmProduct;
 import RealmQuery.QueryCamera;
 import RealmQuery.callBackFinishInsert;
 import adapter.passToDetailPageListener;
@@ -32,7 +34,8 @@ public class CameraFragment extends Fragment implements passToDetailPageListener
 
 public static Context context;
    public static  Handler mHandler;
-    List<Camera> cameras;
+//    List<Camera> cameras;
+    List<RealmProduct> products = new ArrayList<>();
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -48,7 +51,7 @@ public static Context context;
         context = getContext();
         System.out.println("run to here");
 
-          mHandler = new Handler(){
+      /*    mHandler = new Handler(){
             @Override
             public void handleMessage(Message msg) {
                 switch(msg.what){
@@ -56,7 +59,7 @@ public static Context context;
                         //處理少量資訊或UI
                    System.out.println("Form past page");
                         Integer position = (Integer)msg.obj;
-                        Camera obj = cameras.get(position);
+                        RealmProduct obj = products.get(position);
                         DetailPageActivity.camera = obj;
 
                         System.out.println(obj.name);
@@ -70,7 +73,7 @@ public static Context context;
                         break;
                 }
             }
-        };  // pass the object date to detailPage
+        };  // pass the object date to detailPage*/
 
 //        Intent intent = new Intent(this.getContext(), DetailPageActivity.class);
 //        startActivity(intent);
@@ -87,9 +90,14 @@ public static Context context;
         cam1.add(cam1);
         cam2.add(cam2);
         QueryCamera queryCamera = new QueryCamera(getContext());
-        cameras = Camera.cameras;
-        queryCamera.insertCameraToDb(cameras);
-        queryCamera.retrieveCameraByName("canon eOS 760D");
+//        cameras = Camera.cameras;
+//        queryCamera.insertCameraToDb(cameras);
+//       queryCamera.retrieveCameraByName("canon eOS 760D");
+        RealmResults<RealmProduct> result = queryCamera.retrieveProductsByType("smartphone");
+        for(int i=0; i<result.size(); i++){
+            products.add(result.get(i));
+        }
+
 
 //        callBackFinishInsert call;
         queryCamera.retrieveCameraByAllField("", "", "", "", -1, "", "", "", "G");
@@ -105,7 +113,7 @@ public static Context context;
 //        callback.retriveCameraRealmList();
 
 /**********************************************************************************************/
-                RVAdapter adapter = new RVAdapter(Camera.get(), R.layout.cardview);
+                RVAdapter adapter = new RVAdapter(products, R.layout.cardview);
         rv.setAdapter(adapter);
     }
 
@@ -114,7 +122,7 @@ public static Context context;
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_camera, container, false);
 
-
+        System.out.println("Inside Camera Fragment");
         // Inflate the layout for this fragment
         return rootView;
     }

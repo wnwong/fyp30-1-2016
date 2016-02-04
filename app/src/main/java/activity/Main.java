@@ -3,6 +3,7 @@ package activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -32,9 +33,12 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import RealmModel.RealmCamera;
+import RealmModel.RealmProduct;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import product.earphone;
@@ -44,18 +48,25 @@ public class Main extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     UserLocalStore userLocalStore;
     private Realm realm;
+    private int count = 0;
+    public static final String tag = "getProductList";
     public static final String SERVER_ADDRESS = "http://php-etrading.rhcloud.com/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        if(savedInstanceState != null){
+            count = savedInstanceState.getInt("count");
+        }
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         userLocalStore = new UserLocalStore(this);
-        new loadAllProducts().execute();
-
-
+       if(count == 0){
+           new loadAllProducts().execute();
+           new getProductList().execute();
+           count = 1;
+       }
         Fragment frag = new CameraFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -85,6 +96,12 @@ public class Main extends AppCompatActivity
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("count", count);
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         System.out.println("OnStart");
@@ -97,6 +114,7 @@ public class Main extends AppCompatActivity
         }
         return true;
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -194,6 +212,7 @@ public class Main extends AppCompatActivity
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.container_body, fragment);
+            fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
 
             // set the toolbar title
@@ -289,6 +308,84 @@ public class Main extends AppCompatActivity
         }
     }
 
+    public  class getProductList extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            realm = Realm.getInstance(getApplicationContext());
+        //    clearDB(realm);
+            Uri.Builder builder = new Uri.Builder()
+                    .appendQueryParameter("type", "smartphone");
+            String query = builder.build().getEncodedQuery();
+            String JSONResponse = getResponseFromServer("getProductList", query);
+            Log.i(tag,JSONResponse);
+            try{
+                  JSONObject jObject = new JSONObject(JSONResponse);
+                  String product = jObject.getString("products");
+                  JSONArray productArray = new JSONArray(product);
+                 for(int i=0; i < productArray.length();i++){
+                     JSONObject obj = productArray.getJSONObject(i);
+                     String brand = obj.getString("brand");
+                     String model =  obj.getString("model");
+                     String type = obj.getString("type");
+                     String price = obj.getString("price");
+                     String os = obj.getString("os");
+                     String monitor = obj.getString("monitor");
+                     String storage = obj.getString("storage");
+                     String camera = obj.getString("camera");
+                     String path = obj.getString("path");
+
+                     createProductEntry(realm, brand, model, type, price, os, monitor, storage, camera, path);
+                 }
+             }catch (Exception e){
+                  e.printStackTrace();
+             }
+                 return null;
+        }
+    }
+
+    private String getResponseFromServer(String php, String query){
+        String json = null;
+        try{
+           URL url = new URL(SERVER_ADDRESS + php +".php");
+           HttpURLConnection con = (HttpURLConnection) url.openConnection();
+           con.setRequestMethod("POST");
+           con.setDoInput(true);
+            if(query!=null){
+                con.setDoOutput(true);
+                OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream());
+                writer.write(query);
+                writer.flush();
+                writer.close();
+            }
+           BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+           StringBuilder sb = new StringBuilder();
+           String line;
+           while ((line = reader.readLine()) != null) {
+               sb.append(line + "\n");
+           }
+          json= sb.toString();
+       }catch(Exception e){
+           e.printStackTrace();
+       }
+        return json;
+    }
+    private void createProductEntry(Realm realm, String brand, String model, String type, String price, String os, String monitor, String storage, String camera, String path){
+        realm.beginTransaction();
+        RealmProduct rp = realm.createObject(RealmProduct.class);
+        rp.setPrice(price);
+        rp.setBrand(brand);
+        rp.setModel(model);
+        rp.setCamera(camera);
+        rp.setMonitor(monitor);
+        rp.setType(type);
+        rp.setOs(os);
+        rp.setStorage(storage);
+        rp.setPath(path);
+        realm.commitTransaction();
+        Log.i(tag, "The inserted Products:");
+        Log.i(tag, rp.getBrand() + " " + rp.getModel() + " " + rp.getStorage());
+    }
     private void createEarphoneEntry(Realm realm, int pid, String brand, String model, String warranty, String price, String location, String image){
         realm.beginTransaction();
         earphone ep = realm.createObject(earphone.class);
@@ -309,6 +406,8 @@ public class Main extends AppCompatActivity
     private void clearDB(Realm realm){
         realm.beginTransaction();
         realm.allObjects(earphone.class).clear();
+        realm.allObjects(RealmCamera.class).clear();
+ //       realm.allObjects(RealmProduct.class).clear();
         realm.commitTransaction();
     }
 }
