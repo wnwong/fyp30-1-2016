@@ -5,6 +5,7 @@ import android.content.Context;
 import java.util.List;
 
 import RealmModel.RealmCamera;
+import RealmModel.RealmGadget;
 import RealmModel.RealmProduct;
 import activity.CameraFragment;
 import io.realm.Case;
@@ -76,6 +77,12 @@ public class QueryCamera   {
         RealmResults<RealmProduct> realmProducts = realm.where(RealmProduct.class).equalTo("type", type, Case.INSENSITIVE).findAll();
 
         return realmProducts;
+    }
+    public RealmResults<RealmGadget> retrieveProductsByModel(String model)
+    {
+        RealmResults<RealmGadget> realmGadgets = realm.where(RealmGadget.class).equalTo("model", model, Case.INSENSITIVE).findAll();
+
+        return realmGadgets;
     }
 
     public RealmResults<RealmCamera>

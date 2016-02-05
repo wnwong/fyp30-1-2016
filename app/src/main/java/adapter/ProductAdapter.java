@@ -13,19 +13,20 @@ import android.widget.TextView;
 
 import com.example.user.secondhandtradingplatform.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import RealmModel.RealmCamera;
-import product.Product;
+import RealmModel.RealmGadget;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
     private static final int TYPE_INFO = 1;
     private static final int TYPE_POST = 2;
-    List<RealmCamera> products;
+    List<RealmGadget> gadgets = new ArrayList<>();
     String os, mon, camera, pName, price, image;
 
-    public ProductAdapter(List<RealmCamera> products, String pName, String price, String os, String mon, String camera, String image) {
-        this.products = products;
+    public ProductAdapter(List<RealmGadget> gadgets, String pName, String price, String os, String mon, String camera, String image) {
+        this.gadgets = gadgets;
         this.pName = pName;
         this.price = price;
         this.os = os;
@@ -68,18 +69,21 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
         } else {
             PostViewHolder pHolder = (PostViewHolder) holder;
-            RealmCamera product = products.get(position);
-            pHolder.sellerName.setText("");
-            pHolder.sellingPrice.setText("");
-            pHolder.tradePlace.setText("");
+            if(gadgets != null){
+                RealmGadget gadget = gadgets.get(position-1);
+                pHolder.sellerName.setText(gadget.getSeller());
+                pHolder.sellingPrice.setText("HK$" + gadget.getPrice());
+                pHolder.tradePlace.setText(gadget.getSeller_location());
+            }
+
         }
 
     }
 
     @Override
     public int getItemCount() {
-        if (products != null) {
-            return products.size() + 1;
+        if (gadgets != null) {
+            return gadgets.size() + 1;
         } else {
             return 1;
         }

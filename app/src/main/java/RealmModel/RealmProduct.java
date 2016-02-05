@@ -10,7 +10,6 @@ public class RealmProduct extends RealmObject{
     private String model;
     private String os;
     private String monitor;
-    private String storage;
     private String camera;
     private String price;
     private String path;
@@ -56,13 +55,6 @@ public class RealmProduct extends RealmObject{
         this.monitor = monitor;
     }
 
-    public String getStorage() {
-        return storage;
-    }
-
-    public void setStorage(String storage) {
-        this.storage = storage;
-    }
 
     public String getCamera() {
         return camera;

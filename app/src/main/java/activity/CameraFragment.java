@@ -101,7 +101,7 @@ public static Context context;
 
 
 //        callBackFinishInsert call;
-        queryCamera.retrieveCameraByAllField("", "", "", "", -1, "", "", "", "G");
+//        queryCamera.retrieveCameraByAllField("", "", "", "", -1, "", "", "", "G");
 //        {
 //            @Override
 //            public String retriveCameraRealmList(String done) {

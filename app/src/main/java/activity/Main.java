@@ -39,6 +39,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import RealmModel.RealmCamera;
+import RealmModel.RealmGadget;
 import RealmModel.RealmProduct;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -50,7 +51,6 @@ public class Main extends AppCompatActivity
     UserLocalStore userLocalStore;
     ProgressDialog progressDialog;
     private Realm realm;
-    private int count = 0;
     public static final String tag = "getProductList";
     public static final String SERVER_ADDRESS = "http://php-etrading.rhcloud.com/";
 
@@ -58,9 +58,6 @@ public class Main extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            count = savedInstanceState.getInt("count");
-        }
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -68,7 +65,7 @@ public class Main extends AppCompatActivity
         userLocalStore = new UserLocalStore(this);
         if (userLocalStore.getRefreshStatus() == true) {
             showProgress();
-//           new loadAllProducts().execute();
+            new loadAllProducts().execute();
             new getProductList().execute();
             userLocalStore.setRefreshStatus(false);
         }
@@ -95,16 +92,10 @@ public class Main extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt("count", count);
-    }
 
     @Override
     protected void onStart() {
         super.onStart();
-        System.out.println("OnStart");
         authenticate();
     }
 
@@ -247,33 +238,16 @@ public class Main extends AppCompatActivity
 
     public class loadAllProducts extends AsyncTask<Void, Void, Void> {
 
-        public loadAllProducts() {
-        }
-
         @Override
         protected Void doInBackground(Void... params) {
             realm = Realm.getInstance(getApplicationContext());
-            clearDB(realm);
+   ///         clearDB(realm);
+            String JSONResponse = getResponseFromServer("getPosts", null);
+            Log.i(tag,JSONResponse);
             try {
-                URL url = new URL(SERVER_ADDRESS + "retrieveGadget.php");
-                HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                con.setRequestMethod("POST");
-                con.setDoInput(true);
-                Log.i("loadGadget", "Start Reading from Server");
-                BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                StringBuilder sb = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line + "\n");
-                }
-                String json = sb.toString();
-                //Parse JSON
-                JSONObject jObject = new JSONObject(json);
+                JSONObject jObject = new JSONObject(JSONResponse);
                 String gadget = jObject.getString("gadgets");
                 JSONArray gadgetArray = new JSONArray(gadget);
-
-                Log.i("loadGadget", gadget.toString());
-
                 for (int i = 0; i < gadgetArray.length(); i++) {
                     JSONObject obj = gadgetArray.getJSONObject(i);
                     int pid = obj.getInt("product_id");
@@ -281,21 +255,16 @@ public class Main extends AppCompatActivity
                     String model = obj.getString("model");
                     String warranty = obj.getString("warranty");
                     String price = obj.getString("price");
-                    String location = obj.getString("location");
+                    String seller_location = obj.getString("seller_location");
                     String type = obj.getString("type");
+                    String seller = obj.getString("seller");
+                    String scratch = obj.getString("scratch");
+                    String color = obj.getString("color");
                     //Base64 encoded gadget image
                     String image = obj.getString("path");
-                    Log.i("loadGadget", pid + " " + brand + " " + model + " " + warranty + " " + price + " " + location + " " + image);
-                    if (type.equals("earphone"))
-                    //insert into realm
-                    {
-                        createEarphoneEntry(realm, pid, brand, model, warranty, price, location, image);
-                    }
-                    //  clearDB(realm);
+                    Log.i(tag, brand+" "+model+" "+seller_location);
+                    createPostsEntry(realm, pid, brand, model, warranty, price, seller_location, type, seller, scratch, color, image);
                 }
-                reader.close();
-                con.disconnect();
-                realm.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -332,11 +301,10 @@ public class Main extends AppCompatActivity
                     String price = obj.getString("price");
                     String os = obj.getString("os");
                     String monitor = obj.getString("monitor");
-                    String storage = obj.getString("storage");
                     String camera = obj.getString("camera");
                     String path = obj.getString("path");
 
-                    createProductEntry(realm, brand, model, type, price, os, monitor, storage, camera, path);
+                    createProductEntry(realm, brand, model, type, price, os, monitor, camera, path);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -396,7 +364,7 @@ public class Main extends AppCompatActivity
         return json;
     }
 
-    private void createProductEntry(Realm realm, String brand, String model, String type, String price, String os, String monitor, String storage, String camera, String path) {
+    private void createProductEntry(Realm realm, String brand, String model, String type, String price, String os, String monitor, String camera, String path) {
         realm.beginTransaction();
         RealmProduct rp = realm.createObject(RealmProduct.class);
         rp.setPrice(price);
@@ -406,29 +374,27 @@ public class Main extends AppCompatActivity
         rp.setMonitor(monitor);
         rp.setType(type);
         rp.setOs(os);
-        rp.setStorage(storage);
         rp.setPath(path);
         realm.commitTransaction();
         Log.i(tag, "The inserted Products:");
-        Log.i(tag, rp.getBrand() + " " + rp.getModel() + " " + rp.getStorage());
+        Log.i(tag, rp.getBrand() + " " + rp.getModel());
     }
 
-    private void createEarphoneEntry(Realm realm, int pid, String brand, String model, String warranty, String price, String location, String image) {
+    private void createPostsEntry(Realm realm, int pid, String brand, String model, String warranty, String price, String seller_location, String type, String seller, String scratch, String color, String image) {
         realm.beginTransaction();
-        earphone ep = realm.createObject(earphone.class);
-        ep.setPid(pid);
-        ep.setBrand(brand);
-        ep.setModel(model);
-        ep.setWarranty(warranty);
-        ep.setPrice(price);
-        ep.setLocation(location);
-        ep.setImage(image);
+        RealmGadget rc = realm.createObject(RealmGadget.class);
+        rc.setProduct_id(pid);
+        rc.setBrand(brand);
+        rc.setModel(model);
+        rc.setWarranty(warranty);
+        rc.setPrice(price);
+        rc.setType(type);
+        rc.setSeller(seller);
+        rc.setScratch(scratch);
+        rc.setSeller_location(seller_location);
+        rc.setColor(color);
+        rc.setImage(image);
         realm.commitTransaction();
-
-        //      earphone ep1 = realm.where(earphone.class).findFirst();
-        Log.i("loadGadget", "The inserted gadget:");
-        Log.i("loadGadget", ep.getBrand() + " " + ep.getModel());
-
     }
 
     private void clearDB(Realm realm) {
