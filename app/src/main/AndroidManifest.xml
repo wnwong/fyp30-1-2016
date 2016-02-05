@@ -48,8 +48,17 @@
         <activity
             android:name=".addGadget"
             android:label="@string/title_activity_add__gadget_"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".DetailPageActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".DetailPageActivity" />
+        <activity
+            android:name=".ProductInfo"
+            android:label="@string/title_activity_product_info"
+            android:parentActivityName="activity.Main"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="activity.Main" />
+        </activity>
     </application>
 
 </manifest>

@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
         import android.view.ViewGroup;
 
 import com.example.user.secondhandtradingplatform.DetailPageActivity;
+import com.example.user.secondhandtradingplatform.ProductInfo;
 import com.example.user.secondhandtradingplatform.R;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public static Context context;
         context = getContext();
         System.out.println("run to here");
 
-      /*    mHandler = new Handler(){
+          mHandler = new Handler(){
             @Override
             public void handleMessage(Message msg) {
                 switch(msg.what){
@@ -60,11 +61,11 @@ public static Context context;
                    System.out.println("Form past page");
                         Integer position = (Integer)msg.obj;
                         RealmProduct obj = products.get(position);
-                        DetailPageActivity.camera = obj;
+                        ProductInfo.realmProduct = obj;
 
-                        System.out.println(obj.name);
+                        System.out.println(obj.getBrand() + " " + obj.getModel() + " " + obj.getMonitor());
 //                        Object anyobject = obj;
-                        Intent intent = new Intent(context, DetailPageActivity.class);
+                        Intent intent = new Intent(context, ProductInfo.class);
 
 //                        Bundle extras = new Bundle();
 //                        extras.se
@@ -73,7 +74,7 @@ public static Context context;
                         break;
                 }
             }
-        };  // pass the object date to detailPage*/
+        };  // pass the object date to detailPage
 
 //        Intent intent = new Intent(this.getContext(), DetailPageActivity.class);
 //        startActivity(intent);

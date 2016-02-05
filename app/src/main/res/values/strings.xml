@@ -126,7 +126,7 @@
         <item>香港演藝學院</item>
         <item>"香港樹仁大學"</item>
         <item>"恆生管理學院"</item>
-       <item>珠海學院</item>
+        <item>珠海學院</item>
         <item>明愛專上學院</item>
         <item>東華學院</item>
         <item>明德學院</item>
@@ -184,5 +184,6 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_add_new_gadget">AddNewGadget</string>
     <string name="title_activity_add_gadget">addGadget</string>
+    <string name="title_activity_product_info">ProductInfo</string>
 
 </resources>
