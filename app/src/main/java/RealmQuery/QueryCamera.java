@@ -78,6 +78,12 @@ public class QueryCamera   {
 
         return realmProducts;
     }
+    public RealmResults<RealmProduct> searchProductsByModel(String query)
+    {
+        RealmResults<RealmProduct> realmProducts = realm.where(RealmProduct.class).beginGroup().contains("model", query, Case.INSENSITIVE).or().contains("brand", query).endGroup().findAll();
+
+        return realmProducts;
+    }
     public RealmResults<RealmGadget> retrieveProductsByModel(String model)
     {
         RealmResults<RealmGadget> realmGadgets = realm.where(RealmGadget.class).equalTo("model", model, Case.INSENSITIVE).findAll();

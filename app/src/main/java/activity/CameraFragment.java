@@ -36,7 +36,7 @@ public class CameraFragment extends Fragment implements passToDetailPageListener
 public static Context context;
    public static  Handler mHandler;
 //    List<Camera> cameras;
-    List<RealmProduct> products = new ArrayList<>();
+  public static  List<RealmProduct> products = new ArrayList<>();
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -128,9 +128,10 @@ public static Context context;
         return rootView;
     }
 
+
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
     }
 
     @Override

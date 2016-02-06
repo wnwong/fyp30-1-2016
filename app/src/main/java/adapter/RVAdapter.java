@@ -77,12 +77,15 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.CameraViewHolder>{
                 System.out.println("tseting to click");
                 System.out.println("position: " + position);
 //                Context context = CameraFragment.context;
-                passToDetailPageListener pass = new CameraFragment();
-                pass.passToDetail();
+    //            passToDetailPageListener pass = new CameraFragment();
+    //            pass.passToDetail();
 
                 Message message = new Message();
                 message.obj = new Integer(position);
                 message.what = 1;
+                if(products.size()>0){
+                    CameraFragment.products = products;
+                }
                 CameraFragment.mHandler.sendMessage(message);
 
 

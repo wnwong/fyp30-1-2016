@@ -11,10 +11,4 @@
     android:orientation="vertical"
     android:id="@+id/container_body">
 
-    <android.support.v7.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/rview"/>
-
-
 </RelativeLayout>

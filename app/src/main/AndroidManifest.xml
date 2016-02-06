@@ -26,7 +26,13 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
         <activity
             android:name=".Login"
@@ -53,6 +59,15 @@
         <activity
             android:name=".ProductInfo"
             android:label="@string/title_activity_product_info"
+            android:parentActivityName="activity.Main"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="activity.Main" />
+        </activity>
+        <activity
+            android:name=".SearchResultActivity"
+            android:label="@string/title_activity_search_result"
             android:parentActivityName="activity.Main"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

@@ -2,6 +2,7 @@
     <string name="app_name">簡易二手物品交易平台</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="search_hint">搜尋 品牌,型號</string>
 
     <string name="action_search">Search</string>
     <string name="action_settings">設定</string>
@@ -184,6 +185,7 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_add_new_gadget">AddNewGadget</string>
     <string name="title_activity_add_gadget">addGadget</string>
-    <string name="title_activity_product_info">ProductInfo</string>
+    <string name="title_activity_product_info"> 產品資料</string>
+    <string name="title_activity_search_result">搜尋結果</string>
 
 </resources>
